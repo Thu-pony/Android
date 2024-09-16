@@ -1,0 +1,460 @@
+import 'dart:async';
+
+import 'package:get/get.dart';
+import 'package:orginone/components/common/tip/toast.dart';
+import 'package:orginone/dart/base/common/commands.dart';
+import 'package:orginone/dart/core/chat/session.dart';
+import 'package:orginone/dart/core/public/consts.dart';
+import 'package:orginone/dart/core/public/entity.dart';
+import 'package:orginone/dart/base/model.dart';
+import 'package:orginone/dart/base/schema.dart';
+import 'package:orginone/dart/core/public/enums.dart';
+import 'package:orginone/dart/core/public/operates.dart';
+import 'package:orginone/dart/core/target/base/belong.dart';
+import 'package:orginone/dart/core/thing/directory.dart';
+import 'package:orginone/main_base.dart';
+import 'package:orginone/utils/system/notify/notification_util.dart';
+
+import '../person.dart';
+
+const mTypes = [TargetType.person];
+
+abstract class ITeam implements IEntity<XTarget> {
+  //当前用户
+  late IPerson? user;
+  //加载归属组织
+  late IBelong? space;
+  //当前目录
+  late IDirectory directory;
+  //成员
+  late List<XTarget> members;
+
+  //限定成员类型
+  late List<TargetType>? memberTypes;
+  //成员会话
+  late List<ISession> memberChats;
+
+  //深加载
+  Future<void> deepLoad({bool? reload = false});
+  //加载成员
+  Future<List<XTarget>> loadMembers({bool? reload = false});
+
+  //创建用户
+  Future<ITeam?> createTarget(TargetModel data);
+
+  //更新团队信息
+  Future<bool> update(TargetModel data);
+
+  //删除(注销)团队
+  Future<bool> delete({bool? notity});
+
+  //用户拉入新成员
+  Future<bool> pullMembers(List<XTarget> members, {bool? notity});
+
+  //用户移除成员
+  Future<bool> removeMembers(List<XTarget> members, {bool? notity});
+
+  //是否有管理关系的权限
+  bool hasRelationAuth();
+
+  //判断是否拥有某些权限
+  bool hasAuthoritys(List<String> authIds);
+
+  //发送组织变更消息
+  Future<bool> sendTargetNotity(OperateType operate,
+      {XTarget? sub, String? subTargetId});
+  //查找成员会话
+  ISession? findMemberChat(String id);
+}
+
+///团队基类实现
+abstract class Team extends Entity<XTarget> implements ITeam {
+  //构造函数
+  Team(
+    keys,
+    metadata,
+    this.relations, {
+    this.memberTypes = mTypes,
+  }) : super(metadata, [metadata.typeName]) {
+    kernel.subscribe(
+        '${metadata.belongId}-${metadata.id}-target',
+        [...keys, key],
+        (data) => _receiveTarget(TargetOperateModel.fromJson(data)));
+    // LogUtil.d('订阅  ------ ${DateUtil.getNowDateMs()}');
+    // LogUtil.d('订阅  ------ ${metadata.belongId}-${metadata.id}-target');
+    // command.subscribeByFlag('${metadata.belongId}-${metadata.id}-target', (
+    //     [List<dynamic>? args]) {
+    //   if (args != null && args.isNotEmpty) {
+    //     _receiveTarget(TargetOperateModel.fromJson(args[0]));
+    //   }
+    // });
+  }
+
+  ///构造函数使用的参数
+  // final List<String> keys;
+  // @override
+  // final XTarget metadata;
+  final List<String> relations;
+  @override
+  final List<TargetType>? memberTypes;
+  //其他参数
+  @override
+  List<XTarget> members = [];
+  @override
+  List<ISession> memberChats = [];
+  @override
+  late IDirectory directory;
+  bool _memberLoaded = false;
+  // @override
+  // abstract IBelong? space;
+  // @override
+  // abstract IPerson? user;
+
+  bool get isInherited => metadata.belongId != space?.id;
+  @override
+  List<String> get groupTags {
+    if (id == userId) {
+      return ['本人'];
+    }
+    List<String> gtags = [...super.groupTags];
+    if (metadata.belongId != space?.id) {
+      String? name = user?.findShareById(belongId).name;
+      if (name != null && name.isNotEmpty) {
+        gtags.add(name);
+      }
+    }
+    return gtags;
+  }
+
+  @override
+  Future<List<XTarget>> loadMembers({bool? reload = false}) async {
+    if (!_memberLoaded || reload!) {
+      var res = await kernel.querySubTargetById(GetSubsModel(
+        id: id,
+        subTypeNames: memberTypes?.map((e) => e.label).toList() ?? [],
+        page: pageAll,
+      ));
+      if (res.code == 400) {
+        //加群审批通过之后查询群成员的时候 经常会报当前的错误（伴随其他批量接口报错），
+        //接口单独测试基本都会成功，判断是长链接的问题，
+        //ERROR:invoke ErrorInvocation canceled due to the underlying connection being closed.
+        //TODO：临时处理方案 查询失败再查一次
+        res = await kernel.querySubTargetById(GetSubsModel(
+          id: id,
+          subTypeNames: memberTypes?.map((e) => e.label).toList() ?? [],
+          page: pageAll,
+        ));
+      }
+      if (res.success) {
+        _memberLoaded = true;
+        members = res.data?.result ?? [];
+        for (var i in members) {
+          updateMetadata(i);
+        }
+        loadMemberChats(members, true);
+      }
+    }
+    return members;
+  }
+
+  @override
+  Future<bool> pullMembers(List<XTarget> members,
+      {bool? notity = false}) async {
+    var filterMembers = members
+        .where((i) =>
+            memberTypes?.contains(TargetType.getType(i.typeName!)) ?? false)
+        .toList()
+        .where(
+            (element) => this.members.where((m) => m.id == element.id).isEmpty)
+        .toList();
+
+    if (filterMembers.isNotEmpty) {
+      if (notity != null && !notity) {
+        var res = await kernel.pullAnyToTeam(GiveModel(
+          id: id,
+          subIds: filterMembers.map((i) => i.id).toList(),
+        ));
+        // LogUtil.d('拉人结果');
+        // LogUtil.d(res.success);
+        if (!res.success) return false;
+
+        for (var a in filterMembers) {
+          sendTargetNotity(OperateType.add, sub: a, subTargetId: a.id);
+        }
+        notifySession(true, filterMembers);
+        // LogUtil.d('notifySession--通知');
+        // LogUtil.d(filterMembers);
+        // LogUtil.d(filterMembers);
+      }
+      this.members.addAll(filterMembers);
+      loadMemberChats(filterMembers, true);
+    }
+    return true;
+  }
+
+  @override
+  Future<bool> removeMembers(List<XTarget> members,
+      {bool? notity = false}) async {
+    members = members
+        .where((i) =>
+            memberTypes?.contains(TargetType.getType(i.typeName!)) ?? false)
+        .toList()
+        .where((element) =>
+            this.members.where((m) => m.id == element.id).toList().isNotEmpty)
+        .toList();
+    for (var member in members) {
+      if (memberTypes?.contains(TargetType.getType(member.typeName!)) ??
+          false) {
+        if (!notity!) {
+          var res = await kernel
+              .removeOrExitOfTeam(GainModel(id: id, subId: member.id));
+          if (!res.success) return false;
+          sendTargetNotity(OperateType.remove,
+              sub: member, subTargetId: member.id);
+          notifySession(false, [member]); ////
+        }
+        this.members.removeWhere((i) => i.id == member.id);
+        loadMemberChats([member], false);
+      }
+    }
+    return true;
+  }
+
+  Future<XTarget?> create(TargetModel data) async {
+    data.belongId = space?.id;
+    data.teamCode = data.teamCode ?? data.code;
+    data.teamName = data.teamName ?? data.name;
+    var res = await kernel.createTarget(data);
+    if (res.success && res.data?.id != null) {
+      await space?.user?.loadGivedIdentitys(reload: true);
+      return res.data;
+    } else {
+      ToastUtils.showMsg(msg: res.msg);
+    }
+    return null;
+  }
+
+  @override
+  Future<bool> update(TargetModel data) async {
+    data.id = id;
+    data.typeName = typeName;
+    data.belongId = metadata.belongId;
+    data.name = data.name ?? name;
+    data.code = data.code ?? code;
+    data.icon = data.icon ?? metadata.icon;
+    data.teamName = data.teamName ?? data.name;
+    data.teamCode = data.teamCode ?? data.code;
+    data.remark = data.remark ?? remark;
+    var res = await kernel.updateTarget(data);
+    if (res.success && res.data?.id != null) {
+      setMetadata(res.data!);
+      sendTargetNotity(OperateType.update);
+    }
+    return res.success;
+  }
+
+  @override
+  Future<bool> delete({bool? notity = false}) async {
+    if (!notity!) {
+      if (hasRelationAuth() && id != belongId) {
+        await sendTargetNotity(OperateType.delete);
+      }
+      final res = await kernel.deleteTarget(IdModel(metadata.id));
+      notity = res.success;
+    }
+    if (notity) {
+      kernel.unSubscribe(key: key);
+    }
+    return notity;
+  }
+
+  Future<bool> loadContent({bool reload = false}) async {
+    await loadMembers(reload: reload);
+    return true;
+  }
+
+  @override
+  List<OperateModel> operates({int? mode}) {
+    final operates = super.operates();
+    if (hasRelationAuth()) {
+      operates.insertAll(
+          0,
+          [EntityOperates.update, EntityOperates.delete]
+              as Iterable<OperateModel>);
+    }
+    return operates;
+  }
+
+  @override
+  Future<void> deepLoad({bool? reload});
+  @override
+  Future<ITeam?> createTarget(TargetModel data);
+
+  void loadMemberChats(List<XTarget> newMembers, bool isAdd) {
+    memberChats = [];
+  }
+
+  @override
+  bool hasRelationAuth() {
+    return hasAuthoritys([OrgAuth.relationAuthId.label]);
+  }
+
+  @override
+  bool hasAuthoritys(List<String> authIds) {
+    authIds = space?.superAuth?.loadParentAuthIds(authIds) ?? authIds;
+    var orgIds = [metadata.belongId!, id];
+    return user?.authenticate(orgIds, authIds) ?? false;
+  }
+
+  @override
+  Future<bool> sendTargetNotity(OperateType operate,
+      {XTarget? sub, String? subTargetId}) async {
+    var param = DataNotityType(
+      data: {
+        'operate': operate.label,
+        'target': metadata.toJson(),
+        'subTarget': sub?.toJson(),
+        'operater': user?.metadata.toJson() ?? ''
+      },
+      flag: 'target',
+      onlineOnly: true,
+      belongId: belongId,
+      relations: relations,
+      onlyTarget: false,
+      ignoreSelf: false,
+      subTargetId: subTargetId,
+      targetId: id,
+    );
+    param.toJson();
+    // LogUtil.d('sendTargetNotity');
+    // LogUtil.d(param.toJson());
+    var res = await kernel.dataNotify(param);
+    return res.success;
+  }
+
+  Future<void> _kernelReceiveTarget(TargetOperateModel data) async {
+    // LogUtil.d('_kernelReceiveTarget${data.toJson()}');
+  }
+
+  Future<void> _commandReceiveTarget(TargetOperateModel data) async {
+    // LogUtil.d('_commandReceiveTarget${data.toJson()}');
+  }
+
+  Future<void> _receiveTarget(TargetOperateModel data) async {
+    var message = "";
+    switch (OperateType.getType(data.operate ?? "")) {
+      case OperateType.delete:
+        message = '${data.operater?.name}将${data.target?.name}删除.';
+        delete(notity: true);
+        break;
+      case OperateType.update:
+        message = '${data.operater?.name}将${data.target?.name}信息更新.';
+        setMetadata(data.target!);
+        break;
+      case OperateType.remove:
+        if (data.subTarget != null) {
+          if (id == data.target?.id && data.subTarget?.id != space?.id) {
+            if (memberTypes?.contains(
+                    TargetType.getType(data.subTarget?.typeName ?? "")) ??
+                false) {
+              message =
+                  '${data.operater?.name}把${data.subTarget?.name}从${data.target?.name}移除.';
+              await removeMembers([data.subTarget!], notity: true);
+            }
+          } else {
+            message =
+                await removeJoinTarget(data.target!, operater: data.operater);
+          }
+        }
+        break;
+      case OperateType.add:
+        if (data.subTarget != null) {
+          if (id == data.target?.id) {
+            if (memberTypes?.contains(
+                    TargetType.getType(data.subTarget?.typeName ?? "")) ??
+                false) {
+              message =
+                  '${data.operater?.name}把${data.subTarget?.name}与${data.target?.name}建立关系.';
+              //收到pc端审批后调用
+              await pullMembers([data.subTarget!], notity: true);
+            } else {
+              message = await addSubTarget(data.subTarget!);
+            }
+          } else {
+            message =
+                await addJoinTarget(data.target!, operater: data.operater);
+          }
+        }
+        break;
+
+      default:
+        break;
+    }
+    if (message.isNotEmpty) {
+      if (data.operater?.id != user?.id) {
+        // final Logger log = Logger('Team');
+        // Get.snackbar('消息通知', message);
+
+        NotificationUtil.showOperateNotification(
+            data.operater?.id ?? '', '通知', message);
+      }
+      space?.directory.structCallback();
+    }
+    // LogUtil.d('Team-_receiveTarget${data.toJson()}$message');
+
+    Future.delayed(
+      const Duration(milliseconds: 100), //其他地方也有  处理的有点怪异
+      () async {
+        // 操作完成后 新增操作会调用 loadMemberChats 新建的Session会话中 lastMessage recently两个过滤字段为null  false
+        // delayed之后lastMessage 字段有值方可显示到列表
+
+        //操作有更新，通知到provider
+        // LogUtil.d('发送operate_change  ------ ${DateUtil.getNowDateMs()}');
+        command.emitterFlag('session', [
+          {'operate_change': true}
+        ]);
+
+        changeCallback();
+      },
+    );
+
+    // LogUtil.d('发送operate_change  ------ ${DateUtil.getNowDateMs()}');
+    // command.emitterFlag('session', [
+    //   {'operate_change': true}
+    // ]);
+
+    // changeCallback();
+  }
+
+  Future<String> removeJoinTarget(XTarget target, {XTarget? operater}) async {
+    await sleeps(Duration.zero);
+    return '';
+  }
+
+  Future<String> addSubTarget(XTarget target) async {
+    await sleeps(Duration.zero);
+    return '';
+  }
+
+  Future<String> addJoinTarget(XTarget target, {XTarget? operater}) async {
+    await sleeps(Duration.zero);
+    return '';
+  }
+
+  Future<void> notifySession(bool target, List<XTarget> targets) async {
+    await sleeps(Duration.zero);
+  }
+
+  ///延时方法
+  ///@param timeout 延时时长，单位ms
+  Future<bool> sleeps(Duration timeout) async {
+    // return Future(() => Timer(timeout, () => true) as FutureOr<bool>);
+    return Future.delayed(timeout, () => true);
+  }
+
+  //查找成员会话
+  @override
+  ISession? findMemberChat(String id) {
+    return memberChats.firstWhereOrNull((element) => element.id == id);
+  }
+}

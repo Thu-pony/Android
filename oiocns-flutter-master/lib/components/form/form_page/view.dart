@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:orginone/components/common/templates/gy_scaffold.dart';
+import 'package:orginone/components/common/templates/orginone_page_widget.dart';
+import 'package:orginone/components/form/form_widget/view.dart';
+
+import 'index.dart';
+
+class FormPage extends OrginoneStatefulWidget {
+  FormPage({super.key, super.data});
+
+  @override
+  State<FormPage> createState() => _FormPageState();
+}
+
+class _FormPageState extends OrginoneStatefulState<FormPage, dynamic> {
+  @override
+  Widget buildWidget(BuildContext context, dynamic data) {
+    return FormWidget(
+      mainForm: [data.metadata],
+      subForm: const [],
+    );
+  }
+}
+
+class FormPage1 extends GetView<FormController> {
+  const FormPage1({Key? key}) : super(key: key);
+
+  // 主视图
+  Widget _buildView() {
+    return FormWidget(
+      mainForm: controller.mainForm,
+      subForm: controller.subForm,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<FormController>(
+      init: FormController(),
+      id: "form",
+      builder: (_) {
+        return GyScaffold(
+          // appBar: AppBar(title: const Text("form")),
+          titleName: controller.title,
+          body: SafeArea(
+            child: _buildView(),
+          ),
+        );
+      },
+    );
+  }
+}

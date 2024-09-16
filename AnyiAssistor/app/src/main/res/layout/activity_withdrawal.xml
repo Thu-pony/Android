@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityWithdrawal">
+
+    <TextView
+        android:id="@+id/withdrawL_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:text="提现明细"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:layout_alignParentRight="true"
+         />
+    <ImageView
+        android:id="@+id/walleter_icon"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/walleter_icon"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/text_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/walleter_icon"
+        android:text="钱包金额"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:id="@+id/account_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_account"
+        android:text="$0.00"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/btn_withdram"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="立即提现"
+        android:background="@color/black"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

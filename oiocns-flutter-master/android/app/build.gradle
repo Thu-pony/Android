@@ -1,0 +1,152 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+tasks.register("prepareKotlinBuildScriptModel") {}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    compileSdkVersion 34
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        // 如打包出现Failed to transform libs.jar to match attributes
+        checkReleaseBuilds false
+    }
+    aaptOptions{
+        cruncherEnabled = false
+    }
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId "com.github.orginone"
+        // You can update the following values to match your application needs. 
+        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
+        minSdkVersion 24
+        //部分安卓手机型号，在申请存储相关权限时，无法获取存储权限，跳转到设置里，也无法找到存储相关
+        //发现是安卓13版本的问题安卓文档permission_handler的issues里面也有人提出了问题目前(2023-3-6) https://github.com/Baseflow/flutter-permission-handler/issues/995
+        //只能通过降低targetSdkVersion的办法解决，将targetSdkVersion从33变为32
+        // targetSdkVersion flutter.targetSdkVersion
+        targetSdkVersion 32
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        flavorDimensions "default"
+        resValue "string", "app_name", "奥集能"
+    }
+/*
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources false
+            signingConfig signingConfigs.release
+            ndk {
+                // 设置支持的 so 库架构 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'arm64-v8a'
+            }
+            applicationIdSuffix 'oiocns'
+        }
+        debug{
+            ndk {
+                // 设置支持的 so 库架构 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'arm64-v8a','armeabi-v7a', 'arm64-v8a','x86', 'x86_64'
+            }
+        }
+    }
+    */
+        // 不同APP的配置
+    productFlavors {
+        // 开发环境
+        // dev {
+        //     buildConfigField 'String', 'BASE_HOST', '"orginone.cn"'
+        //     applicationIdSuffix ".dev"
+        //     versionNameSuffix ""
+        //     resValue "string", "app_name", "奥集能(Dev)"
+        // }
+        
+        // 生产环境
+        prod {
+            buildConfigField 'String', 'BASE_HOST', '"asset.orginone.cn"'
+            applicationIdSuffix ".prod"
+            versionNameSuffix ""
+            resValue "string", "app_name", "奥集能"
+        }
+    }
+    // android.applicationVariants.all { variant ->
+    //     variant.outputs.all { output ->
+    //         def env
+    //         def versionName
+    //         def versionCode
+    //         def type
+    //         env = variant.productFlavors[0].name
+    //         versionName = variant.versionName
+    //         versionCode = variant.versionCode
+    //         type = variant.buildType.name
+
+    //         def outputFile = output.outputFile
+    //         if (outputFile != null && outputFile.name.endsWith('.apk')) {
+    //             outputFileName = "oiocns_" + env + "_" + type + "_" + versionName + "_" + versionCode + ".apk"
+    //         }
+    //     }
+    // }
+}
+
+dependencies {
+    implementation "androidx.window:window:1.0.0"
+    implementation "androidx.multidex:multidex:2.0.1"
+    // implementation(name: 'walletapi', ext: 'aar')
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    implementation "com.google.code.gson:gson:2.8.6"
+}
+
+flutter {
+    source '../..'
+}
+
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}

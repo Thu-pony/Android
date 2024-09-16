@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="72dip"
+          android:layout_height="72dip"
+          android:background="@drawable/letter_tip_bg"
+          android:clickable="false"
+          android:focusable="false"
+          android:focusableInTouchMode="false"
+          android:gravity="center"
+          android:shadowColor="#BB000000"
+          android:shadowRadius="2.75"
+          android:textColor="@android:color/white"
+          android:textSize="42sp"/>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/container"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/item_height_large"
+              android:background="@drawable/tile_bg"
+              android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="@dimen/item_height_large"
+        android:layout_height="@dimen/item_height_large"
+        android:layout_marginLeft="@dimen/content_margin">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="@dimen/photo_size_small"
+            android:layout_height="@dimen/photo_size_small"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/badge"
+            android:layout_width="@dimen/icon_size_medium"
+            android:layout_height="@dimen/icon_size_medium"
+            android:layout_gravity="right|top"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/tile_badge"
+            android:gravity="center"
+            android:textAppearance="@style/AppTextAppearanceSmall"
+            android:textColor="@color/white"/>
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/content_margin"
+        android:layout_marginRight="@dimen/activity_margin"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@style/AppTextAppearanceSmall"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:maxLines="1"
+            android:textAppearance="@style/AppTextAppearanceMedium"/>
+
+        <TextView
+            android:id="@+id/tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:textAppearance="@style/AppTextAppearanceSmall"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,343 @@
+name: orginone
+description: orginone.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# IOS 版本号
+# version: 1.0.8+001
+# Android 版本号
+version: 1.0.4+105
+
+environment:
+  sdk: ">=2.17.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/image/logo.png"
+
+flutter_app_name:
+  name: "奥集能"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  #========================================新增加包，请放在对应分类，并增加描述和具体使用场景（不知道用途的包将被移除）
+  #========================================网络请求包
+  # 微软 signalr
+  # signalr_netcore: ^1.3.7
+  signalr_netcore: ^1.3.6
+  # flutter_signalr_core: ^0.2.0
+  # 网络库，日志库，工具库，路径库，压缩库
+  dio: ^5.2.1+1
+  #网络请求拦截器
+  # dio_cache_interceptor: ^3.4.2
+  #网络库（用在手机网络状态监听）
+  connectivity: ^3.0.3
+
+  #========================================文件操作工具包
+  #用于获取应用程序在设备上的文件路径
+  path_provider: ^2.0.11
+  #flutter_filereader: ^3.0.0
+  #用于压缩和解压缩文件
+  archive: ^3.3.1
+  #下载工具，实现后台文件下载和上传功能的插件
+  background_downloader: ^6.2.0
+  #创建一个后台服务，并在该服务中执行一些需要长时间运行的任务，如网络请求、文件读写、定时任务等
+  flutter_background_service: ^3.0.1
+
+  #========================================日志工具包
+  #网络请求日志库
+  pretty_dio_logger: ^1.2.0-beta-1
+  #系统日志库
+  logging: ^1.0.2
+
+  #========================================其他工具包
+  #常用工具库
+  common_utils: ^2.1.0
+  #UUID生成库
+  uuid: ^3.0.6
+  #用于加密和解密数据，
+  encrypt: ^5.0.3
+  #多线程（上传下载任务列表）
+  # worker_manager: ^5.0.0
+  # 状态管理组件管理库
+  get: ^4.6.5
+  # 适配不同尺寸和分辨率的屏幕
+  flutter_screenutil: ^5.8.4
+  # 二维码生成
+  qr_flutter: ^4.0.0
+  # 汉字转拼音
+  lpinyin: ^2.0.2
+  #事件总线
+  event_bus: 2.0.0
+  #数据本地化，存储和获取持久化的键值对数据的插件
+  shared_preferences: ^2.2.2
+  #用于查询Flutter应用程序包信息的插件
+  #它提供了获取应用程序的版本号、名称、构建号等信息的API，可以帮助开发者在应用程序中展示相关信息，或者用于调试和日志记录等
+  package_info_plus: ^4.0.2
+  # 设备信息
+  device_info_plus: ^9.0.2
+  #日期处理库
+  # jiffy: ^5.0.0
+
+  #========================================资源查看UI包
+  #文档解析器
+  #markdown文档
+  flutter_markdown: ^0.6.0
+  #pdf预览插件
+  flutter_pdfview: 1.3.1
+  #html渲染插件
+  flutter_widget_from_html: ^0.10.3
+  #webview插件
+  webview_flutter: ^4.5.0
+  # 开启本地服务器的插件
+  # jaguar: ^3.0.0
+  # jaguar_flutter_asset: ^3.0.0
+  #图片预览插件
+  photo_view: ^0.14.0
+  #URL预览插件
+  flutter_link_previewer: ^3.1.0
+  #展示视频的插件
+  # chewie: ^1.7.0
+  #播放视频的插件
+  video_player: ^2.7.2
+  #管理设备上的照片和视频的库
+  photo_manager: ^2.6.0
+  #图像加载和处理库，网络图像加载、图片缓存、图片缩放和裁剪、模糊效果、圆角边框等
+  extended_image: ^8.0.2
+  #图片选择
+  image_picker: ^0.8.5+3
+  # 图片保存
+  image_gallery_saver: ^2.0.3
+  #显示点状指示器的插件，提供了多种风格的点状指示器，包括圆形点、方形点、线条点等
+  # dots_indicator: ^3.0.0
+  #创建可滑动轮播图的，可以在水平或垂直方向上滚动多个项目，并且支持自动轮播、手势滑动、指示器等
+  carousel_slider: ^4.2.1
+  #创建滑动组件，可以轻松地实现各种滑动效果，如图片轮播、文本滑动等
+  # another_xlider: ^3.0.1
+  #多媒体资源选择器
+  #类似于微信的多选资源选择器功能，支持选择图片、视频、音频等多媒体资源，并可以进行预览、压缩、删除等操作
+  # wechat_assets_picker: ^8.6.3
+  #相机选择器插件
+  #提供了类似于微信的相机选择功能，支持拍照、录像、设置曝光参数、捏合缩放等操作，并可以将拍摄的照片或视频保存到本地或上传到服务器
+  # wechat_camera_picker: ^4.0.2
+  #文件选择库
+  file_picker: ^3.0.4
+
+  #========================================图标UI包
+  #系统图标
+  # flutter_launcher_icons: ^0.10.0
+  #表情符号选择器
+  emoji_picker_flutter: ^1.5.0
+  #网络图片缓存
+  cached_network_image: ^3.2.1
+  #高级版本的头像（Avatar）组件，适用于用户个人资料、评论、消息等
+  # flutter_advanced_avatar: ^1.1.0
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  #Cupertino小部件使用的默认图标
+  # cupertino_icons: ^1.0.2
+  #svg图标
+  flutter_svg: ^2.0.5
+  #图标字体
+  ionicons: ^0.2.2
+
+  #========================================UI组件包
+  #过渡动画
+  # page_animation_transition: ^1.0.0
+
+  #远程更新
+  ota_update: ^4.0.1
+  #应用程序的更新管理插件
+  flutter_xupdate: ^2.0.0
+
+  # UI 库
+  getwidget: ^3.0.1
+
+  # 原生推送通知
+  flutter_local_notifications: ^17.0.0
+  #显示 Toast 通知
+  fluttertoast: ^8.0.9
+  # 创建带有动画效果的对话框，弹框
+  # flutter_animated_dialog: ^2.0.1
+  #用于创建和显示自定义的对话框
+  flutter_custom_dialog: ^1.0.20
+  #用于创建和显示自适应对话框
+  # adaptive_dialog: ^1.9.0
+  #uikit菜单弹框
+  custom_pop_up_menu: ^1.2.4
+  #展示加载动画效果、进度条展示和Toast提示
+  # flutter_easyloading: ^3.0.5
+  # FCM应用程序的消息推送
+  # firebase_messaging: ^14.7.10
+
+  #用于处理 Android 和 iOS 设备上的权限请求
+  permission_handler: ^10.0.1
+
+  # 二维码扫描
+  # qr_code_scanner: ^1.0.1
+  #扫码 支持图片识别
+  scan: ^1.6.0
+
+  #日期时间选择器
+  flutter_datetime_picker_plus: ^2.0.1
+  omni_datetime_picker: ^0.1.4
+  #下拉菜单控件库
+  # dropdown_button2: ^2.3.9
+  #实现城市列表、联系人列表等，具有索引和悬停效果
+  azlistview: ^2.0.0
+  #创建选择器控件的插件，日期选择器、时间选择器、颜色选择器、字符串选择器等
+  # flutter_picker: ^2.1.0
+
+  # 音频录制以及音频播放
+  flutter_sound: ^9.2.13
+  #音频播放器
+  audio_session: ^0.1.16
+  #音频波形
+  audio_wave: ^0.1.4
+
+  #用于产生振动反馈
+  vibration: ^1.7.5
+
+  #徽章，通常用于显示一些重要的信息，如未读消息的数量、更新状态、新内容提示等
+  badges: ^3.1.1
+
+  #滚动到指定位置
+  scrollable_positioned_list: ^0.2.3
+  # view滑动库，用于实现滑动删除和滑动操作的功能
+  flutter_slidable: ^2.0.0
+
+  #验证码输入框
+  pin_input_text_field: ^4.5.0
+  #创建引脚代码输入，其中每个像素都是可定制（适用于验证码）
+  # pinput: ^3.0.1
+
+  #图表
+  # syncfusion_flutter_charts: ^22.2.5
+  # fl_chart: ^0.61.0
+
+  #时间线进度（待办审批历史痕迹中用到）
+  timeline_tile: ^2.0.0
+
+  #启动辅助库，打开网页、发送邮件和拨打电话等
+  url_launcher: ^6.1.10
+
+  #下拉刷新和上拉加载框架
+  easy_refresh: ^3.3.2+1
+  #用于实现滚动同步
+  # sync_scroll_library: ^1.1.0
+  #创建嵌套滚动视图
+  extended_nested_scroll_view: ^6.1.2
+
+  #实现切换按钮功能
+  # toggle_switch: ^2.1.0
+
+  #标签页（Tab）控件库
+  extended_tabs: ^4.1.0
+
+  #用于在屏幕底部显示模态底部面板（）
+  # modal_bottom_sheet: ^3.0.0-pre
+  modal_bottom_sheet: ^3.0.0-pre
+
+  #loading动画
+  loading_indicator: ^3.1.1
+  #========================================新增加包，请放在对应分类，并增加描述和具体使用场景（不知道用途的包将被移除）
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^2.0.0
+  hive_generator: ^1.1.3
+  build_runner: ^2.2.0
+
+# For information on the generic Dart part of this file, see the
+# following pages: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/empty/
+    - assets/icons/
+    - assets/icons/types/
+    - assets/icons/types/files/
+    - assets/icons/types/folders/
+    - assets/icons/operate/
+    - assets/icons/toolbar/
+    - assets/icons/topbar/
+    - assets/icons/navbar/
+    - assets/icons/setting/
+    - assets/markdown/
+    # - assets/markdown/originone.md
+  fonts:
+    - family: Orginone
+      fonts:
+        - asset: assets/fonts/iconfont.ttf
+    - family: DingTalk
+      fonts:
+        - asset: assets/fonts/ding_talk_jin_bu_ti.ttf
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

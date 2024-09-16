@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fa_venus">&#xf221;</string>
+    <string name="fa_mars">&#xf222;</string>
+    <string name="fa_genderless">&#xf22d;</string>
+    <string name="fa_link">&#xf0c1;</string>
+    <string name="fa_send">&#xf1d8;</string>
+</resources>

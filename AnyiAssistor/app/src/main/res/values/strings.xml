@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Anyiassistor</string>
+    <string name="hello_world">Hello World!!!!</string>
+    <string name="my_order">我的订单</string>
+    <string name="my_input">我的收入</string>
+    <string name="my_account">银行账户</string>
+    <string name="my_message">消息绑定</string>
+    <string name="contact_severice">联系客服</string>
+    <string name="vesion">版本</string>
+    <string name="exit">退出</string>
+</resources>

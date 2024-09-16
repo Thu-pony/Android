@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_margin"
+        android:gravity="center"
+        android:padding="2dp"
+        android:textColor="@color/darkGray"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height_large"
+        android:background="@drawable/tile_bg"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="@dimen/photo_size_small"
+            android:layout_height="@dimen/photo_size_small"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_margin"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/item_height"
+            android:layout_toRightOf="@id/photo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:maxLines="1"
+                android:textAppearance="@style/AppTextAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:textAppearance="@style/AppTextAppearanceSmall"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

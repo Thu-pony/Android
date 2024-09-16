@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">FakeWeChat</string>
+    <string name="send_status">发布微博</string>
+    <string name="no_more_statuses">没有更多微博了</string>
+    <string name="web_link">网页链接</string>
+    <string name="skip">跳过</string>
+    <string name="tab_chat">微信</string>
+    <string name="tab_contacts">通讯录</string>
+    <string name="tab_explore">发现</string>
+    <string name="tab_me">我</string>
+    <string name="tip_double_click_exit">再次点击退出</string>
+    <string name="search">搜索</string>
+    <string name="add_more">添加</string>
+    <string name="comments">朋友圈</string>
+    <string name="scan_qr_code">扫一扫</string>
+    <string name="shake">摇一摇</string>
+    <string name="nearby">附近的人</string>
+    <string name="bottle">漂流瓶</string>
+    <string name="game">游戏</string>
+    <string name="star">收藏</string>
+    <string name="emotion">表情</string>
+    <string name="album">相册</string>
+    <string name="settings">设置</string>
+    <string name="uid">微博号: <xliff:g id="uid">%1$d</xliff:g></string>
+    <string name="email">邮箱: <xliff:g id="email">%1$s</xliff:g></string>
+    <string name="add_new_friend">添加朋友</string>
+    <string name="receive_payment">收付款</string>
+    <string name="help_and_feedback">帮助与反馈</string>
+    <string name="no_friends">没有好友</string>
+    <string name="loading">正在加载…</string>
+    <string name="load_owner_failed">无法加载用户信息，请检查网络连接！</string>
+    <string name="robot">聊天机器人</string>
+</resources>

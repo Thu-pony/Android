@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AcceptOrderActivity">
+    <com.tencent.tencentmap.mapsdk.maps.MapView
+        android:id="@+id/device_map"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+    <RelativeLayout    android:id="@+id/order_info"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:id="@+id/order_date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23-04-02 14:00-14:20"
+            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/order_startplace_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="普外科一床"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/order_date_text"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        <TextView
+            android:id="@+id/order_endplace_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/order_startplace_text"
+            android:text="X光,核普"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        <TextView
+            android:id="@+id/order_fee_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.10元"
+            android:textSize="16sp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/order_startplace_text"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_gravity="center_vertical"/>
+        <Button
+            android:id="@+id/bind_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_endplace_text"
+            android:text="绑定设备"
+            android:layout_marginTop="80dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_endplace_text"
+            android:text="开始订单"
+            android:layout_marginTop="80dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/finish_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_endplace_text"
+            android:text="结束订单"
+            android:layout_marginTop="80dp"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/return_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bind_btn"
+            android:text="返回"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+</LinearLayout>

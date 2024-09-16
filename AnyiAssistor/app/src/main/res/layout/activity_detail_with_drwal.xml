@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityDetailWithDrwal">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/ghostWhite"
+        android:id="@+id/date_bg">
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:id="@+id/now_date"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textViewEmpty"
+        android:layout_below="@+id/date_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="暂无提现明细"
+        android:gravity="center"
+        android:visibility="gone"/> <!-- 默认隐藏 -->
+
+    <ListView
+        android:id="@+id/listViewData"
+        android:layout_below="@+id/date_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>

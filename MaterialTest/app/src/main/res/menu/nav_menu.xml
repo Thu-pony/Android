@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navCall"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Call" />
+        <item
+            android:id="@+id/navFriends"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Friends" />
+        <item
+            android:id="@+id/navLocation"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Location" />
+        <item
+            android:id="@+id/navMail"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Mail" />
+        <item
+            android:id="@+id/navTask"
+            android:icon="@drawable/ic_launcher_background"
+            android:title="Tasks" />
+    </group>
+</menu>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityBankAccount">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_weight="6"
+        android:id="@+id/card_list"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@color/whiteSmoke"
+    android:id="@+id/add"
+    android:layout_weight="1"
+    >
+    <ImageButton
+        android:src="@drawable/acc_add"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/add_bankcount"/>
+    <TextView
+        android:text="该账户用于收款"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/text_bank_acconut"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/add_bankcount"
+        />
+</RelativeLayout>
+</LinearLayout>

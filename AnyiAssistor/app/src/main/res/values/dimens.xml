@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="content_margin">8dp</dimen>
+    <dimen name="app_bar_height">256dp</dimen>
+    <dimen name="config_prefDialogWidth">320dp</dimen>
+    <dimen name="slide_switch_default_width">48dp</dimen>
+    <dimen name="divider">2px</dimen>
+    <dimen name="tile_divider_margin">8dp</dimen>
+    <dimen name="icon_size_large">36dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_medium">20dp</dimen>
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_tiny">12dp</dimen>
+    <dimen name="photo_size_huge">108dp</dimen>
+    <dimen name="photo_size_large">84dp</dimen>
+    <dimen name="photo_size">64dp</dimen>
+    <dimen name="photo_size_medium">56dp</dimen>
+    <dimen name="photo_size_small">48dp</dimen>
+    <dimen name="photo_size_tiny">36dp</dimen>
+    <dimen name="item_height_large">64dp</dimen>
+    <dimen name="item_height">48dp</dimen>
+    <dimen name="item_height_small">36dp</dimen>
+    <dimen name="text_size_large">17sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_small">13sp</dimen>
+</resources>

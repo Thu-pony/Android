@@ -1,0 +1,28 @@
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:orginone/components/common/getx/base_controller.dart';
+
+import 'state.dart';
+
+class VersionInfoController extends BaseController<VersionInfoState> {
+  @override
+  final VersionInfoState state = VersionInfoState();
+  @override
+  void onInit() {
+    loadAssests();
+    super.onInit();
+  }
+
+  void loadAssests() async {
+    String filePath = 'assets/markdown/originone.md';
+    dynamic result = await rootBundle.loadString(filePath);
+    if (result != null) {
+      state.mk.value = result.toString();
+      // LogUtil.d(state.mk.value);
+    }
+  }
+
+  void backToHome() {
+    Get.back();
+  }
+}

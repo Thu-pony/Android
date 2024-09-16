@@ -1,0 +1,21 @@
+import 'package:get/get.dart';
+import 'package:orginone/components/common/getx/base_controller.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+import 'state.dart';
+
+class AboutController extends BaseController<AboutState> {
+  RxString version = ''.obs;
+
+  @override
+  void onReady() {
+    super.onReady();
+    PackageInfo.fromPlatform().then((value) {
+      version.value = 'Version ${value.version}';
+    });
+  }
+
+  void backToHome() {
+    Get.back();
+  }
+}
